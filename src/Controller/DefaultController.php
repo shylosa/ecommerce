@@ -24,14 +24,8 @@ class DefaultController extends AbstractController
     /**
      * @Route("/product/{id}", name = "product")
      */
-    public function product($id, ProductRepository $productRepository)
+    public function product(Product $product)
     {
-        $product = $productRepository->find($id);
-
-        if (!$product){
-           return $this->createNotFoundException('Product #' . $id . ' not found');
-        }
-
         return $this->render('default/product.html.twig', [
             'product' => $product,
         ]);

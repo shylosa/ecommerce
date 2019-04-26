@@ -2,11 +2,23 @@
 
 {% block body %}
     <h1>Товары</h1>
-    {% for product in products %}
-        <p>
-            <a href = "{{ path('product', {'id': product.id}) }}">{{ product.name }}</a>
-            - {{ product.name }} - {{ product.price / 100 }}
-        </p>
-    {% endfor %}
 
+    <div class="row">
+    {% for product in products %}
+     <div class="col-3">
+        <div class="card" style="width: 18rem;">
+            <img src="//placehold.it/200x150" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href = "{{ path('product', {'id': product.id}) }}">{{ product.name }}</a>
+                    - {{ product.name }} - {{ product.price / 100 }}
+                </h5>
+                <p class="card-text">{{ product.price }}</p>
+                <p class="card-text">{{ product.description }}</p>
+                <a href="#" class="btn btn-primary">В корзину</a>
+            </div>
+        </div>
+     </div>
+    {% endfor %}
+    </div>
 {% endblock %}
