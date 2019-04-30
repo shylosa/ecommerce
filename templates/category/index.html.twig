@@ -6,7 +6,7 @@
     <h1>Категории товаров</h1>
     {% for category in categories %}
         <p>
-            <a href = "{{ path('show', {'id': category.id}) }}">{{ category.name }}</a>
+            <a href = "{{ path('category_show', {'id': category.id}) }}">{{ category.name }}</a>
         </p>
     {% endfor %}
 
