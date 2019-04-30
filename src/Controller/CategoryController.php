@@ -21,7 +21,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/category/{id}", name = "show")
+     * @Route("/category/{id}", name = "category_show")
      */
     public function show($id, CategoryRepository $categoryRepository)
     {
@@ -31,7 +31,7 @@ class CategoryController extends AbstractController
             return $this->createNotFoundException('Category #' . $id . ' not found');
         }
 
-        return $this->render('category/show.html.twig', [
+        return $this->render('category/category_show.html.twig', [
             'category' => $category,
         ]);
 
