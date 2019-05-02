@@ -15,20 +15,20 @@ class AboutController extends AbstractController
         return $this->render('about/index.html.twig', [
             'controller_name' => 'AboutController',
         ]);
-        //
     }
 
-    /**
-     * @Route ("/contact", name = "about_contact")
-     */
+	/**
+	 * @Route("/contact", name="about_contact")
+	 */
     public function contact()
-    {
-        $name = 'Anonymous';
-        $pass = 'nopass';
+	{
+		$name = 'Anonymous';
+		$pass = 'nopass';
 
-        return $this->render('about/contact.html.twig', [
-            'userName'=>$name,
-            'password'=>$pass,
-        ]);
-    }
+		return $this->render('about/contact.html.twig', [
+			'userName' => $name,
+			'password' => $pass,
+		]);
+	}
+
 }

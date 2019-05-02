@@ -9,25 +9,27 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
+
     /**
      * @Route("/", name="default")
      */
     public function index(ProductRepository $productRepository)
     {
-        $products = $productRepository->findAll();
+    	$products = $productRepository->findAll();
 
-        return $this->render('default/index.html.twig', [
+    	return $this->render('default/index.html.twig', [
             'products' => $products,
         ]);
     }
 
-    /**
-     * @Route("/product/{id}", name = "product")
-     */
+	/**
+	 * @Route("/product/{id}", name="product")
+	 */
     public function product(Product $product)
-    {
-        return $this->render('default/product.html.twig', [
-            'product' => $product,
-        ]);
-    }
+	{
+		return $this->render('default/product.html.twig', [
+			'product' => $product,
+		]);
+	}
+
 }
