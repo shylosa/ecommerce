@@ -36,6 +36,11 @@ class OrderItem
      */
     private $cost;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="orderItems")
+     */
+    private $orderNumber;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class OrderItem
     public function setCost(int $cost): self
     {
         $this->cost = $cost;
+
+        return $this;
+    }
+
+    public function getOrderNumber(): ?Order
+    {
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(?Order $orderNumber): self
+    {
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }
