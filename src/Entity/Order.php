@@ -5,12 +5,20 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
+ * @ORM\Table(name = "orderNumber")
  */
 class Order
 {
+
+    const STATUS_NEW = 1;
+    const STATUS_ORDERED = 2;
+    const STATUS_SENT = 3;
+    const STATUS_DELIVERED = 4;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -19,7 +27,7 @@ class Order
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="datetime")
      */
     private $dateCreate;
 
@@ -27,11 +35,6 @@ class Order
      * @ORM\Column(type="string", length=255)
      */
     private $state;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $user;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -48,9 +51,17 @@ class Order
      */
     private $orderItems;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", cascade={"persist", "remove"})
+     */
+    private $user;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+        $this->dateCreate= new DateTime();
+        $this->state = self::STATUS_NEW;
+        $this->orderPrice = 0;
     }
 
     public function getId(): ?int
@@ -78,18 +89,6 @@ class Order
     public function setState(string $state): self
     {
         $this->state = $state;
-
-        return $this;
-    }
-
-    public function getUser(): ?string
-    {
-        return $this->user;
-    }
-
-    public function setUser(string $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
@@ -145,6 +144,18 @@ class Order
                 $orderItem->setOrderNumber(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

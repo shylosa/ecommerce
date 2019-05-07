@@ -17,7 +17,8 @@ class OrderItem
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orderItems")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $product;
 
@@ -37,25 +38,14 @@ class OrderItem
     private $cost;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="orderItems")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="orderItems", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $orderNumber;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProduct(): ?string
-    {
-        return $this->product;
-    }
-
-    public function setProduct(string $product): self
-    {
-        $this->product = $product;
-
-        return $this;
     }
 
     public function getCountOrderedItem(): ?int
@@ -102,6 +92,18 @@ class OrderItem
     public function setOrderNumber(?Order $orderNumber): self
     {
         $this->orderNumber = $orderNumber;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }

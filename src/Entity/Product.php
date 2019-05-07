@@ -13,137 +13,174 @@ use Doctrine\ORM\Mapping as ORM;
 class Product
 {
 
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $name;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
 
-	/**
-	 * @ORM\Column(type="text", nullable=true)
-	 */
-	private $description;
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
 
-	/**
-	 * @ORM\Column(type="integer")
-	 */
-	private $price;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $price;
 
-	/**
-	 * @ORM\Column(type="integer", nullable=true)
-	 */
-	private $count;
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $count;
 
-	/**
-	 * @ORM\Column(type="boolean", options={"default": false})
-	 */
-	private $isTop;
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isTop;
 
-	/**
-	 * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="products")
-	 */
-	private $categories;
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="products")
+     */
+    private $categories;
 
-	public function __construct()
-	{
-		$this->isTop = false;
-		$this->categories = new ArrayCollection();
-	}
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="product")
+     */
+    private $orderItems;
 
-	public function getId(): ?int
-	{
-		return $this->id;
-	}
+    public function __construct()
+    {
+        $this->isTop = false;
+        $this->categories = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
+    }
 
-	public function getName(): ?string
-	{
-		return $this->name;
-	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-	public function setName(string $name): self
-	{
-		$this->name = $name;
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-		return $this;
-	}
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
-	public function getDescription(): ?string
-	{
-		return $this->description;
-	}
+        return $this;
+    }
 
-	public function setDescription(?string $description): self
-	{
-		$this->description = $description;
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 
-		return $this;
-	}
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
-	public function getPrice(): ?int
-	{
-		return $this->price;
-	}
+        return $this;
+    }
 
-	public function setPrice(int $price): self
-	{
-		$this->price = $price;
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
 
-		return $this;
-	}
+    public function setPrice(int $price): self
+    {
+        $this->price = $price;
 
-	public function getCount(): ?int
-	{
-		return $this->count;
-	}
+        return $this;
+    }
 
-	public function setCount(?int $count): self
-	{
-		$this->count = $count;
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
 
-		return $this;
-	}
+    public function setCount(?int $count): self
+    {
+        $this->count = $count;
 
-	public function getIsTop(): ?bool
-	{
-		return $this->isTop;
-	}
+        return $this;
+    }
 
-	public function setIsTop(bool $isTop): self
-	{
-		$this->isTop = $isTop;
+    public function getIsTop(): ?bool
+    {
+        return $this->isTop;
+    }
 
-		return $this;
-	}
+    public function setIsTop(bool $isTop): self
+    {
+        $this->isTop = $isTop;
 
-	/**
-	 * @return Collection|Category[]
-	 */
-	public function getCategories(): Collection
-	{
-		return $this->categories;
-	}
+        return $this;
+    }
 
-	public function addCategory(Category $category): self
-	{
-		if ( !$this->categories->contains($category) ) {
-			$this->categories[] = $category;
-		}
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
 
-		return $this;
-	}
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
 
-	public function removeCategory(Category $category): self
-	{
-		if ( $this->categories->contains($category) ) {
-			$this->categories->removeElement($category);
-		}
+        return $this;
+    }
 
-		return $this;
-	}
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderItem[]
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItem $orderItem): self
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems[] = $orderItem;
+            $orderItem->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): self
+    {
+        if ($this->orderItems->contains($orderItem)) {
+            $this->orderItems->removeElement($orderItem);
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getProduct() === $this) {
+                $orderItem->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
 }
