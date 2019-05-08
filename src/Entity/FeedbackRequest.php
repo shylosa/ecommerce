@@ -10,15 +10,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class FeedbackRequest
 {
-    const TOPIC_PAYMENT_DELIVERY = 1;
-    const TOPIC_COOPERATION = 2;
-    const TOPIC_COMMON = 3;
+	const TOPIC_PAYMENT_DELIVERY = 1;
+	const TOPIC_COOPERATION = 2;
+	const TOPIC_COMMON = 3;
 
-    public static $topics = [
-      self::TOPIC_PAYMENT_DELIVERY => 'Оплата и доставка',
-      self::TOPIC_COOPERATION => 'Сотрудничество',
-      self::TOPIC_COMMON => 'Общие вопросы',
-    ];
+	public static $topics = [
+		self::TOPIC_PAYMENT_DELIVERY => 'Оплата и доставка',
+		self::TOPIC_COOPERATION => 'Сотрудничество',
+		self::TOPIC_COMMON => 'Общие вопросы',
+	];
 
     /**
      * @ORM\Id()
@@ -29,28 +29,28 @@ class FeedbackRequest
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="3")
-     * @Assert\NotBlank()
+	 * @Assert\Length(min="3")
+	 * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Email(checkHost=true, checkMX=true)
-     * @Assert\NotBlank()
+	 * @Assert\Email(checkHost=true, checkMX=true)
+	 * @Assert\NotBlank()
      */
     private $email;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
+	 * @Assert\NotBlank()
      */
     private $topic;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Length(min="10", max="2000")
-     * @Assert\NotBlank()
+	 * @Assert\Length(min="10", max="2000")
+	 * @Assert\NotBlank()
      */
     private $message;
 
@@ -106,11 +106,4 @@ class FeedbackRequest
 
         return $this;
     }
-
-    public function __toString()
-    {
-        return $this->getEmail();
-    }
-
-
 }

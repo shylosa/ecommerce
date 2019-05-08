@@ -16,6 +16,14 @@ class OrderItem
      */
     private $id;
 
+	/**
+	 * @var Order
+	 *
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="orderItems")
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+    private $order;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orderItems")
      * @ORM\JoinColumn(nullable=false)
@@ -23,9 +31,9 @@ class OrderItem
     private $product;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
-    private $countOrderedItem;
+    private $count;
 
     /**
      * @ORM\Column(type="integer")
@@ -35,27 +43,35 @@ class OrderItem
     /**
      * @ORM\Column(type="integer")
      */
-    private $cost;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="orderItems", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $orderNumber;
+    private $amount;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCountOrderedItem(): ?int
+    public function getProduct(): ?Product
     {
-        return $this->countOrderedItem;
+        return $this->product;
     }
 
-    public function setCountOrderedItem(?int $countOrderedItem): self
+    public function setProduct(?Product $product): self
     {
-        $this->countOrderedItem = $countOrderedItem;
+        $this->product = $product;
+        $this->setPrice($product->getPrice());
+
+        return $this;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(int $count): self
+    {
+        $this->count = $count;
+        $this->updateAmount();
 
         return $this;
     }
@@ -68,43 +84,42 @@ class OrderItem
     public function setPrice(int $price): self
     {
         $this->price = $price;
+        $this->updateAmount();
 
         return $this;
     }
 
-    public function getCost(): ?int
+    public function getAmount(): ?int
     {
-        return $this->cost;
+        return $this->amount;
     }
 
-    public function setCost(int $cost): self
+    public function setAmount(int $amount): self
     {
-        $this->cost = $cost;
+        $this->amount = $amount;
 
         return $this;
     }
 
-    public function getOrderNumber(): ?Order
+    public function getOrder(): ?Order
     {
-        return $this->orderNumber;
+        return $this->order;
     }
 
-    public function setOrderNumber(?Order $orderNumber): self
+    public function setOrder(?Order $order): self
     {
-        $this->orderNumber = $orderNumber;
+        $this->order = $order;
 
         return $this;
     }
 
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
+    private function updateAmount()
+	{
+		$this->amount = $this->price * $this->count;
 
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
+		if ($this->order) {
+			$this->order->updateAmount();
+		}
+	}
 
-        return $this;
-    }
 }

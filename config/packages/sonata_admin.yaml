@@ -22,8 +22,3 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Категории }
 
-    admin.feedback_request:
-        class: App\Admin\FeedbackRequestAdmin
-        arguments: [~, App\Entity\FeedbackRequest, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Обратная связь }

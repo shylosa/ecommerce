@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: skillup_student
- * Date: 07.05.19
- * Time: 19:39
- */
 
 namespace App\Service;
-
 
 use App\Entity\Order;
 use App\Entity\OrderItem;
@@ -18,62 +11,63 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OrdersService
 {
-    const CART_SESSION_KEY = 'cart';
+	const CART_SESSION_KEY = 'cart';
 
-    private $session;
+	private $session;
 
-    private $orderRepository;
+	private $orderRepository;
 
-    private $entityManager;
+	private $entityManager;
 
-    public function __construct(
-        SessionInterface $session,
-        OrderRepository $orderRepository,
-        EntityManagerInterface $entityManager
-    ){
-        $this->session = $session;
-        $this->orderRepository = $orderRepository;
-        $this->entityManager = $entityManager;
-    }
+	public function __construct(
+		SessionInterface $session,
+		OrderRepository $orderRepository,
+		EntityManagerInterface $entityManager
+	) {
+		$this->session = $session;
+		$this->orderRepository = $orderRepository;
+		$this->entityManager = $entityManager;
+	}
 
+	public function getOrderFromCart()
+	{
+		$order = null;
+		$orderId = $this->session->get(self::CART_SESSION_KEY);
 
-    public function getOrderFromCart()
-    {
-        $order = null;
-        $orderId = $this->session->get(self::CART_SESSION_KEY);
-        if ($orderId){
-            $order = $this->orderRepository->find($orderId);
-        }
+		if ($orderId) {
+			$order = $this->orderRepository->find($orderId);
+		}
 
-        if (!$order) {
-            $order = new Order();
-        }
+		if (!$order) {
+			$order = new Order();
+		}
 
-        return $order;
-    }
+		return $order;
+	}
 
-    public function addToCart(Product $product, int $count = 1) : Order
-    {
-        $order = $this->getOrderFromCart();
-        $orderItem = null;
+	public function addToCart(Product $product, int $count = 1): Order
+	{
+		$order = $this->getOrderFromCart();
+		$orderItem = null;
 
-        foreach ($order->getOrderItems() as $item){
-            if ($item->getProduct() === $product){
-                $orderItem = $item;
-            }
-        }
+		foreach ($order->getOrderItems() as $item) {
+			if ($item->getProduct() === $product) {
+				$orderItem = $item;
+			}
+		}
 
-        if (!$orderItem){
-            $orderItem = new OrderItem();
-            $orderItem->setProduct($product);
-            $order->addOrderItem($orderItem);
-        }
+		if (!$orderItem) {
+			$orderItem = new OrderItem();
+			$orderItem->setProduct($product);
+			$order->addOrderItem($orderItem);
+		}
 
-        $orderItem->setCountOrderedItem($orderItem->getCountOrderedItem()+$count);
-        $this->entityManager->persist($order);
-        $this->entityManager->flush();
-        $this->session->get(self::CART_SESSION_KEY, $order->getId());
+		$orderItem->setCount($orderItem->getCount() + $count);
+		$this->entityManager->persist($order);
+		$this->entityManager->flush();
+		$this->session->set(self::CART_SESSION_KEY, $order->getId());
 
-        return $order;
-    }
+		return $order;
+	}
+
 }

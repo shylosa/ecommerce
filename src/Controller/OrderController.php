@@ -15,8 +15,8 @@ class OrderController extends AbstractController
      */
     public function addToCart(Product $product, OrdersService $ordersService, Request $request)
     {
-        $ordersService->addToCart($product);
-        $referer = $request->headers->get('Referer');
+		$ordersService->addToCart($product);
+		$referer = $request->headers->get('Referer');
 
         return $this->redirect($referer);
     }

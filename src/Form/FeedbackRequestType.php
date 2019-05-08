@@ -15,27 +15,20 @@ class FeedbackRequestType extends AbstractType
     {
         $builder
             ->add('name', null, [
-                'label' => 'Имя',
-                'attr' => [
-                    'placeholder' => 'Введите имя',
-                    ]
-                ])
-            ->add('email', EmailType::class,  [
-                'label' => 'Email',
-                'attr' => [
-                    'placeholder' => 'Введите Email',
-                ]
-            ])
+            	'label' => 'Имя',
+				'attr' => [
+					'placeholder' => 'Введите имя',
+				],
+			])
+            ->add('email', EmailType::class)
             ->add('topic', ChoiceType::class, [
-                'choices' => array_flip(FeedbackRequest::$topics),
-                'placeholder' => 'Выберите тему',
-            ])
+            	'choices' => array_flip(FeedbackRequest::$topics),
+				'placeholder' => 'Выберите тему',
+				'label' => 'Тема',
+			])
             ->add('message', null, [
-        'label' => 'Сообщение',
-        'attr' => [
-            'placeholder' => 'Введите сообщение',
-        ]
-    ])
+				'label' => 'Сообщение',
+			])
         ;
     }
 

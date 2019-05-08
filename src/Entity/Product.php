@@ -13,145 +13,145 @@ use Doctrine\ORM\Mapping as ORM;
 class Product
 {
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+	/**
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
+	 * @ORM\Column(type="integer")
+	 */
+	private $id;
+
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $name;
+
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	private $description;
+
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $price;
+
+	/**
+	 * @ORM\Column(type="integer", nullable=true)
+	 */
+	private $count;
+
+	/**
+	 * @ORM\Column(type="boolean", options={"default": false})
+	 */
+	private $isTop;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="products")
+	 */
+	private $categories;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $price;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $count;
-
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $isTop;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="products")
-     */
-    private $categories;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="product", orphanRemoval=true)
      */
     private $orderItems;
 
-    public function __construct()
-    {
-        $this->isTop = false;
-        $this->categories = new ArrayCollection();
-        $this->orderItems = new ArrayCollection();
-    }
+	public function __construct()
+               	{
+               		$this->isTop = false;
+               		$this->categories = new ArrayCollection();
+                 $this->orderItems = new ArrayCollection();
+               	}
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getId(): ?int
+               	{
+               		return $this->id;
+               	}
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+	public function getName(): ?string
+               	{
+               		return $this->name;
+               	}
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+	public function setName(string $name): self
+               	{
+               		$this->name = $name;
+               
+               		return $this;
+               	}
 
-        return $this;
-    }
+	public function getDescription(): ?string
+               	{
+               		return $this->description;
+               	}
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
+	public function setDescription(?string $description): self
+               	{
+               		$this->description = $description;
+               
+               		return $this;
+               	}
 
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
+	public function getPrice(): ?int
+               	{
+               		return $this->price;
+               	}
 
-        return $this;
-    }
+	public function setPrice(int $price): self
+               	{
+               		$this->price = $price;
+               
+               		return $this;
+               	}
 
-    public function getPrice(): ?int
-    {
-        return $this->price;
-    }
+	public function getCount(): ?int
+               	{
+               		return $this->count;
+               	}
 
-    public function setPrice(int $price): self
-    {
-        $this->price = $price;
+	public function setCount(?int $count): self
+               	{
+               		$this->count = $count;
+               
+               		return $this;
+               	}
 
-        return $this;
-    }
+	public function getIsTop(): ?bool
+               	{
+               		return $this->isTop;
+               	}
 
-    public function getCount(): ?int
-    {
-        return $this->count;
-    }
+	public function setIsTop(bool $isTop): self
+               	{
+               		$this->isTop = $isTop;
+               
+               		return $this;
+               	}
 
-    public function setCount(?int $count): self
-    {
-        $this->count = $count;
+	/**
+	 * @return Collection|Category[]
+	 */
+	public function getCategories(): Collection
+               	{
+               		return $this->categories;
+               	}
 
-        return $this;
-    }
+	public function addCategory(Category $category): self
+               	{
+               		if ( !$this->categories->contains($category) ) {
+               			$this->categories[] = $category;
+               		}
+               
+               		return $this;
+               	}
 
-    public function getIsTop(): ?bool
-    {
-        return $this->isTop;
-    }
-
-    public function setIsTop(bool $isTop): self
-    {
-        $this->isTop = $isTop;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Category[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Category $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-        }
-
-        return $this;
-    }
+	public function removeCategory(Category $category): self
+               	{
+               		if ( $this->categories->contains($category) ) {
+               			$this->categories->removeElement($category);
+               		}
+               
+               		return $this;
+               	}
 
     /**
      * @return Collection|OrderItem[]
