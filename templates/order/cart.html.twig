@@ -1,14 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-{#    <table>#}
-{#        {% for orderItem in cart %}#}
-{#            <tr>#}
-{#                <td>{{ orderItem.orderItems.values }}</td>#}
-{#            </tr>#}
-{#        {% endfor %}#}
-{#    </table>#}
+{% block title %}Корзина{% endblock %}
 
-    <h1>{{ dump(cart.orderItems.values) }}</h1>
+{% block body %}
+    <h1>Корзина</h1>
+
+    <table class="table table-striped">
+        <tr>
+            <th>Товар</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th>Стоимость</th>
+        </tr>
+
+        {% for item in order.orderItems %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.count }}</td>
+                <td>{{ item.price|money }}</td>
+                <td>{{ item.amount|money }}</td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <td colspan="3">Всего</td>
+            <td>{{ order.amount|money }}</td>
+        </tr>
+    </table>
+
+    {#<h1>{{ dump(cart.orderItems.values) }}</h1>#}
 
 {% endblock %}
