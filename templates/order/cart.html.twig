@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{#    <table>#}
+{#        {% for orderItem in cart %}#}
+{#            <tr>#}
+{#                <td>{{ orderItem.orderItems.values }}</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#    </table>#}
+
+    <h1>{{ dump(cart.orderItems.values) }}</h1>
+
+{% endblock %}
