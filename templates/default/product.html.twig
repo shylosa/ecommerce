@@ -2,6 +2,6 @@
 
 {% block body %}
 	<h1>{{ product.name }}</h1>
-	<p>Цена: {{ product.price / 100 }}</p>
+	<p>Цена: {{ product.price|money }}</p>
 {% endblock %}
 
