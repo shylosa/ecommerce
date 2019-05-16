@@ -4,8 +4,17 @@
 
 {% block body %}
     <h1>{{ category.name }}</h1>
-        {{ include('fragments/productsList.html.twig', {'products': category.products}) }}
-    <div class="row">
 
+    <div class="col-md-6 col-lg-3">
+        {% if category.image and vich_uploader_asset(category, 'image') %}
+            <img src="{{ vich_uploader_asset(category, 'image') }}" class="card-img-top" alt="...">
+        {% else %}
+            <img src="//placehold.it/200x150" class="card-img-top" alt="...">
+        {% endif %}
+    </div>
+    <br>
+
+    <div class="row">
+        {{ include('fragments/productsList.html.twig', {'products': category.products}) }}
     </div>
 {% endblock %}
