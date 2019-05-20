@@ -5,24 +5,21 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {{ encore_entry_link_tags('app') }}
 
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="{{ path('default') }}">e-Shop</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Категории
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -44,10 +41,9 @@
             <li class="nav-item">
                 <a href="{{ path('order_cart') }}" class="nav-link">
                     <i class="fas fa-shopping-cart"></i>
-                   <span id="header-cart"> {{ render(controller('\\App\\Controller\\OrderController::headerCart')) }}</span>
+                    <span id="header-cart">{{ render(controller('\\App\\Controller\\OrderController::headerCart')) }}</span>
                 </a>
             </li>
-
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 <li class="nav-item">
 					   <span class="navbar-text">
@@ -80,10 +76,9 @@
     {% block body %}{% endblock %}
 </div>
 
-<script src="{{ asset('js/app.js') }}"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 {{ encore_entry_script_tags('app') }}
+
 {% block javascripts %}{% endblock %}
-
-
 </body>
 </html>
