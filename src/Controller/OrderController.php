@@ -56,4 +56,26 @@ class OrderController extends AbstractController
             'order' => $order,
         ]);
     }
+
+    /**
+     * @Route("/cart/delete-item/{id}", name="order_delete_item")
+     */
+    public function deleteItem(OrderItem $orderItem, OrdersService $ordersService, Request $request)
+    {
+        $order = $ordersService->getOrderFromCart();
+
+        if ($orderItem->getOrder() !== $order) {
+            return $this->createAccessDeniedException('Invalid order item');
+        }
+
+        $ordersService->deleteItem($orderItem);
+
+        if ($request->isXmlHttpRequest()){
+            return $this->render('order/cartTable.html.twig', [
+                'order'=>$order
+            ]);
+        }
+        return $this->redirectToRoute('order_cart');
+
+    }
 }
