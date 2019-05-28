@@ -78,4 +78,12 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('order_cart');
 
     }
+
+    /**
+     * @Route("/order/make", name="order_make_order")
+     */
+    public function makeOrder(OrdersService $ordersService, Request $request)
+    {
+        $order = $ordersService->getOrderFromCart();
+    }
 }
