@@ -1,0 +1,30 @@
+{% block subject %}Ваш заказ на сайте{% endblock %}
+
+{% block body %}
+    <h1>Ваш заказ №{{ order.id }}</h1>
+
+    <table class="table table-striped">
+        <tr>
+            <th>Товар</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th>Стоимость</th>
+        </tr>
+
+        {% for item in order.orderItems %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.count }}</td>
+                <td>{{ item.price|money }}</td>
+                <td>{{ item.amount|money }}</td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <td colspan="2">Всего</td>
+            <td>{{ order.amount|money }}</td>
+            <td></td>
+        </tr>
+    </table>
+
+{% endblock %}

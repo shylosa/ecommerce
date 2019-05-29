@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Корзина{% endblock %}
@@ -9,4 +8,6 @@
     <div id="cartTable">
         {{ include('order/cartTable.html.twig', {'order': order}) }}
     </div>
+
+    <a href="{{ path('order_make_order') }}" class="btn btn-primary">Оформить заказ</a>
 {% endblock %}

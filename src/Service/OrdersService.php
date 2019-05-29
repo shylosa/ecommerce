@@ -7,6 +7,7 @@ use App\Entity\OrderItem;
 use App\Entity\Product;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OrdersService
@@ -15,14 +16,20 @@ class OrdersService
     private $session;
     private $orderRepository;
     private $entityManager;
+    private $mailer;
+    private $ordersEmail;
     public function __construct(
         SessionInterface $session,
         OrderRepository $orderRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        Mailer $mailer,
+        ParameterBagInterface $parameterBag
     ) {
         $this->session = $session;
         $this->orderRepository = $orderRepository;
         $this->entityManager = $entityManager;
+        $this->mailer = $mailer;
+        $this->ordersEmail = $parameterBag->get('orders_email');
     }
     public function getOrderFromCart()
     {
@@ -62,14 +69,27 @@ class OrdersService
         $this->entityManager->flush();
         return $orderItem->getOrder();
     }
-
-    public function deleteItem (OrderItem $orderItem) : Order
+    public function deleteItem(OrderItem $orderItem): Order
     {
         $order = $orderItem->getOrder();
         $order->removeOrderItem($orderItem);
         $this->entityManager->remove($orderItem);
         $this->entityManager->flush();
-
         return $order;
+    }
+    public function makeOrder(Order $order)
+    {
+        $this->entityManager->flush();
+        $this->session->remove(self::CART_SESSION_KEY);
+        $this->mailer->sendMessage(
+            'order/customerEmail.html.twig',
+            [$order->getEmail()],
+            ['order' => $order]
+        );
+        $this->mailer->sendMessage(
+            'order/adminEmail.html.twig',
+            [$this->ordersEmail],
+            ['order' => $order]
+        );
     }
 }
