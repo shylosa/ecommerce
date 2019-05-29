@@ -95,4 +95,12 @@ class OrderController extends AbstractController
     {
         return $this->render('order/thanks.html.twig');
     }
+
+    /**
+     * @Route("/order/make", name="order_make_order")
+     */
+    public function makeOrder(OrdersService $ordersService, Request $request)
+    {
+        $order = $ordersService->getOrderFromCart();
+    }
 }
