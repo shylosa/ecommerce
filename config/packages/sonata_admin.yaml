@@ -22,3 +22,16 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Категории }
 
+    admin.order:
+        class: App\Admin\OrderAdmin
+        arguments: [~, App\Entity\Order, App\Controller\Admin\OrderController]
+        calls:
+            - [setTemplate, [edit, admin/order/edit.html.twig]]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Заказы }
+
+    admin.order_item:
+        class: App\Admin\OrderItemAdmin
+        arguments: [~, App\Entity\OrderItem, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false }

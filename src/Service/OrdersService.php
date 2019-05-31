@@ -79,6 +79,7 @@ class OrdersService
     }
     public function makeOrder(Order $order)
     {
+        $order->setUser(Order::STATUS_ORDERED);
         $this->entityManager->flush();
         $this->session->remove(self::CART_SESSION_KEY);
         $this->mailer->sendMessage(

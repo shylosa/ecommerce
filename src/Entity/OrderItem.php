@@ -113,7 +113,7 @@ class OrderItem
         return $this;
     }
 
-    private function updateAmount()
+    public function updateAmount()
 	{
 		$this->amount = $this->price * $this->count;
 

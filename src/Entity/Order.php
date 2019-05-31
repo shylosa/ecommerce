@@ -44,7 +44,8 @@ class Order
     /**
      * @var OrderItem[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="order", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem",
+     *      mappedBy="order", cascade={"persist"}, orphanRemoval=true)
      */
     private $orderItems;
     /**

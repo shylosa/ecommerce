@@ -5,7 +5,7 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('frontend') }}
 
     {% block stylesheets %}{% endblock %}
 </head>
@@ -73,7 +73,7 @@
     {% block body %}{% endblock %}
 </div>
 
-{{ encore_entry_script_tags('app') }}
+{{ encore_entry_script_tags('frontend') }}
 
 {% block javascripts %}{% endblock %}
 </body>
