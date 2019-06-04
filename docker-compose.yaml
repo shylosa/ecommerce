@@ -1,0 +1,37 @@
+version: '3.3'
+services:
+  ecom_nginx:
+    build: ./docker/nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/conf:/etc/nginx/conf.d
+      - .:/var/www/html
+      - ./docker/nginx/log/:/var/log/nginx
+      - /tmp:/tmp
+    links:
+      - ecom_php
+
+  ecom_php:
+    build: ./docker/php
+    volumes:
+      - .:/var/www/html
+      - /tmp:/tmp
+      - ~/.composer:/var/www/.composer
+    links:
+      - ecom_mysql
+
+  ecom_mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=ecom902
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    volumes:
+      - ecom_mysql_data:/var/lib/mysql
+
+volumes:
+  ecom_mysql_data:
