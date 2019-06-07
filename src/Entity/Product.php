@@ -62,6 +62,13 @@ class Product
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $imageOriginalName;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AttributeValue", mappedBy="product",
+     *     orphanRemoval=true, indexBy="attribute_id", cascade={"all"})
+     */
+    private $attributeValues;
+
     public function __construct()
     {
         $this->isTop = false;
@@ -138,6 +145,7 @@ class Product
         }
         return $this;
     }
+
     /**
      * @return Collection|OrderItem[]
      */
@@ -145,6 +153,15 @@ class Product
     {
         return $this->orderItems;
     }
+
+    /**
+     * @return Collection|AttributeValue[]
+     */
+    public function getAttributeValues(): Collection
+    {
+        return $this->attributeValues;
+    }
+
     public function addOrderItem(OrderItem $orderItem): self
     {
         if ( !$this->orderItems->contains($orderItem) ) {
@@ -203,9 +220,8 @@ class Product
         $this->imageOriginalName = $imageOriginalName;
         return $this;
     }
-
     public function __toString()
     {
-       return $this->getName();
+        return $this->getName();
     }
 }

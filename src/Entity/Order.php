@@ -45,7 +45,7 @@ class Order
      * @var OrderItem[]
      *
      * @ORM\OneToMany(targetEntity="App\Entity\OrderItem",
-     *      mappedBy="order", cascade={"persist"}, orphanRemoval=true)
+     *     mappedBy="order", cascade={"persist"}, orphanRemoval=true)
      */
     private $orderItems;
     /**
@@ -130,7 +130,7 @@ class Order
     }
     public function addOrderItem(OrderItem $orderItem): self
     {
-        if ( !$this->orderItems->contains($orderItem) ) {
+        if (!$this->orderItems->contains($orderItem)) {
             $this->orderItems[] = $orderItem;
             $orderItem->setOrder($this);
         }
@@ -139,10 +139,10 @@ class Order
     }
     public function removeOrderItem(OrderItem $orderItem): self
     {
-        if ( $this->orderItems->contains($orderItem) ) {
+        if ($this->orderItems->contains($orderItem)) {
             $this->orderItems->removeElement($orderItem);
             // set the owning side to null (unless already changed)
-            if ( $orderItem->getOrder() === $this ) {
+            if ($orderItem->getOrder() === $this) {
                 $orderItem->setOrder(null);
             }
         }

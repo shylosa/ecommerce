@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Service;
-
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\Product;
@@ -9,7 +7,6 @@ use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
 class OrdersService
 {
     const CART_SESSION_KEY = 'cart';
@@ -79,7 +76,7 @@ class OrdersService
     }
     public function makeOrder(Order $order)
     {
-        $order->setUser(Order::STATUS_ORDERED);
+        $order->setStatus(Order::STATUS_ORDERED);
         $this->entityManager->flush();
         $this->session->remove(self::CART_SESSION_KEY);
         $this->mailer->sendMessage(

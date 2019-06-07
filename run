@@ -3,4 +3,4 @@
 sudo service mysql stop
 sudo service apache2 stop
 sudo service nginx stop
-docker-compose up
+docker-compose up -d

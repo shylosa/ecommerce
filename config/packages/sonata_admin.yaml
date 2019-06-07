@@ -26,7 +26,7 @@ services:
         class: App\Admin\OrderAdmin
         arguments: [~, App\Entity\Order, App\Controller\Admin\OrderController]
         calls:
-            - [setTemplate, [edit, admin/order/edit.html.twig]]
+            - [ setTemplate, [edit, admin/order/edit.html.twig]]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Заказы }
 
