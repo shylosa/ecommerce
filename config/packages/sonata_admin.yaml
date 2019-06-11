@@ -12,7 +12,9 @@ sonata_block:
 services:
     admin.product:
         class: App\Admin\ProductAdmin
-        arguments: [~, App\Entity\Product, ~]
+        arguments: [~, App\Entity\Product, App\Controller\Admin\ProductController]
+        calls:
+            - [ setTemplate, [edit, admin/product/edit.html.twig]]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Товары }
 
@@ -33,5 +35,23 @@ services:
     admin.order_item:
         class: App\Admin\OrderItemAdmin
         arguments: [~, App\Entity\OrderItem, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false }
+
+    admin.attribute:
+        class: App\Admin\AttributeAdmin
+        arguments: [~, App\Entity\Attribute, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Атрибуты }
+
+    admin.attribute_case:
+        class: App\Admin\AttributeCaseAdmin
+        arguments: [~, App\Entity\AttributeCase, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false }
+
+    admin.attribute_value:
+        class: App\Admin\AttributeValueAdmin
+        arguments: [~, App\Entity\AttributeValue, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, show_in_dashboard: false }

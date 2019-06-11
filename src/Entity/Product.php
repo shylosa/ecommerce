@@ -62,18 +62,16 @@ class Product
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $imageOriginalName;
-
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AttributeValue", mappedBy="product",
-     *     orphanRemoval=true, indexBy="attribute_id", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="App\Entity\AttributeValue", mappedBy="product", orphanRemoval=true, cascade={"persist"})
      */
     private $attributeValues;
-
     public function __construct()
     {
         $this->isTop = false;
         $this->categories = new ArrayCollection();
         $this->orderItems = new ArrayCollection();
+        $this->attributeValues = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -133,19 +131,18 @@ class Product
     }
     public function addCategory(Category $category): self
     {
-        if ( !$this->categories->contains($category) ) {
+        if (!$this->categories->contains($category)) {
             $this->categories[] = $category;
         }
         return $this;
     }
     public function removeCategory(Category $category): self
     {
-        if ( $this->categories->contains($category) ) {
+        if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
         }
         return $this;
     }
-
     /**
      * @return Collection|OrderItem[]
      */
@@ -153,18 +150,9 @@ class Product
     {
         return $this->orderItems;
     }
-
-    /**
-     * @return Collection|AttributeValue[]
-     */
-    public function getAttributeValues(): Collection
-    {
-        return $this->attributeValues;
-    }
-
     public function addOrderItem(OrderItem $orderItem): self
     {
-        if ( !$this->orderItems->contains($orderItem) ) {
+        if (!$this->orderItems->contains($orderItem)) {
             $this->orderItems[] = $orderItem;
             $orderItem->setProduct($this);
         }
@@ -172,10 +160,10 @@ class Product
     }
     public function removeOrderItem(OrderItem $orderItem): self
     {
-        if ( $this->orderItems->contains($orderItem) ) {
+        if ($this->orderItems->contains($orderItem)) {
             $this->orderItems->removeElement($orderItem);
             // set the owning side to null (unless already changed)
-            if ( $orderItem->getProduct() === $this ) {
+            if ($orderItem->getProduct() === $this) {
                 $orderItem->setProduct(null);
             }
         }
@@ -188,7 +176,7 @@ class Product
     public function setImage(?File $image): Product
     {
         $this->image = $image;
-        if ( $image !== null ) {
+        if ($image !== null) {
             $this->updatedAt = new \DateTimeImmutable();
         }
         return $this;
@@ -223,5 +211,31 @@ class Product
     public function __toString()
     {
         return $this->getName();
+    }
+    /**
+     * @return Collection|AttributeValue[]
+     */
+    public function getAttributeValues(): Collection
+    {
+        return $this->attributeValues;
+    }
+    public function addAttributeValue(AttributeValue $attributeValue): self
+    {
+        if (!$this->attributeValues->contains($attributeValue)) {
+            $this->attributeValues[] = $attributeValue;
+            $attributeValue->setProduct($this);
+        }
+        return $this;
+    }
+    public function removeAttributeValue(AttributeValue $attributeValue): self
+    {
+        if ($this->attributeValues->contains($attributeValue)) {
+            $this->attributeValues->removeElement($attributeValue);
+            // set the owning side to null (unless already changed)
+            if ($attributeValue->getProduct() === $this) {
+                $attributeValue->setProduct(null);
+            }
+        }
+        return $this;
     }
 }

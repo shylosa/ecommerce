@@ -1,1 +1,1 @@
-console.log('admin.js works!');
+require('./admin/product_attribute');

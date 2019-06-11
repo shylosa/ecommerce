@@ -1,16 +1,10 @@
 <?php
-
 namespace App\Entity;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
- * @Vich\Uploadable
  */
 class Category
 {
@@ -30,34 +24,15 @@ class Category
      * @ORM\ManyToMany(targetEntity="App\Entity\Product", mappedBy="categories")
      */
     private $products;
-
     /**
-     * @var File
-     * @Vich\UploadableField(mapping="categories", fileNameProperty="imageName", originalName="imageOriginalName")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Attribute", inversedBy="categories")
      */
-    private $image;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $imageName;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $updatedAt;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $imageOriginalName;
-
-
+    private $attributes;
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -71,10 +46,8 @@ class Category
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
-
     /**
      * @return Collection|Product[]
      */
@@ -82,86 +55,45 @@ class Category
     {
         return $this->products;
     }
-
     public function addProduct(Product $product): self
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
             $product->addCategory($this);
         }
-
         return $this;
     }
-
     public function removeProduct(Product $product): self
     {
         if ($this->products->contains($product)) {
             $this->products->removeElement($product);
             $product->removeCategory($this);
         }
-
         return $this;
     }
-
-    public function __toString()
+    public function __toString() :string
     {
         return $this->getName();
     }
-
-
     /**
-     * @return File
-     *
+     * @return Collection|Attribute[]
      */
-    public function getImage(): ?File
+    public function getAttributes(): Collection
     {
-        return $this->image;
+        return $this->attributes;
     }
-
-    public function setImage(?File $image): Category
+    public function addAttribute(Attribute $attribute): self
     {
-        $this->image = $image;
-
-        if ($image !== null) {
-            $this->updatedAt = new \DateTimeImmutable();
+        if (!$this->attributes->contains($attribute)) {
+            $this->attributes[] = $attribute;
         }
-
         return $this;
     }
-
-    public function getImageName(): ?string
+    public function removeAttribute(Attribute $attribute): self
     {
-        return $this->imageName;
-    }
-
-    public function setImageName(?string $imageName): self
-    {
-        $this->imageName = $imageName;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getImageOriginalName(): ?string
-    {
-        return $this->imageOriginalName;
-    }
-
-    public function setImageOriginalName(?string $imageOriginalName): self
-    {
-        $this->imageOriginalName = $imageOriginalName;
-
+        if ($this->attributes->contains($attribute)) {
+            $this->attributes->removeElement($attribute);
+        }
         return $this;
     }
 

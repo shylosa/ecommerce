@@ -33,16 +33,16 @@ services:
     volumes:
       - ecom_mysql_data:/var/lib/mysql
 
-  phpmyadmin:
+  ecom_phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     environment:
-      - PMA_ARBITRARY=1
+     - PMA_ARBITRARY=1
     restart: always
     ports:
-      - 8080:80
+     - 8080:80
     volumes:
-      - /sessions
+     - /sessions
 
 volumes:
   ecom_mysql_data:

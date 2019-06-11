@@ -1,0 +1,6 @@
+{% extends '@SonataAdmin/CRUD/edit.html.twig' %}
+
+{% block form %}
+    {{ parent() }}
+    <script id="get_attribute_cases" data-url="{{ admin.generateUrl('getAttributeCases', {'id': '---id---'}) }}"></script>
+{% endblock %}
