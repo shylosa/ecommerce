@@ -1,5 +1,6 @@
 <?php
 namespace App\Controller;
+use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\Product;
 use App\Form\OrderType;
@@ -74,30 +75,24 @@ class OrderController extends AbstractController
     public function makeOrder(OrdersService $ordersService, Request $request)
     {
         $order = $ordersService->getOrderFromCart();
-
-        if ($order->getAmount() == 0){
-            return $this->redirectToRoute('default');
-        }
-
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $ordersService->makeOrder($order);
-            return $this->redirectToRoute('order_thanks');
+            return $this->redirectToRoute('order_thanks', ['id' => $order->getId()]);
         }
-
         return $this->render('order/makeOrder.html.twig', [
             'order' => $order,
             'form' => $form->createView(),
         ]);
     }
-
     /**
-     * @Route("/order/thanks", name="order_thanks")
+     * @Route("/order/thanks/{id}", name="order_thanks")
      */
-    public function thanks()
+    public function thanks(Order $order)
     {
-        return $this->render('order/thanks.html.twig');
+        return $this->render('order/thanks.html.twig', [
+            'order' => $order,
+        ]);
     }
 }

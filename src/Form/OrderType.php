@@ -9,6 +9,8 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('firstName')
+            ->add('lastName')
             ->add('phone')
             ->add('email')
             ->add('address')

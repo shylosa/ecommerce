@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h1>{{ product.name }}</h1>
+            <p>Цена: {{ product.price / 100 }}</p>
+        </div>
+        <div class="col">
+            <dl>
+                {% for attributeValue in product.attributeValues %}
+                    <dt>{{ attributeValue.attribute.name }}</dt>
+                    <dd>{{ attributeValue.value }}</dd>
+                {% endfor %}
+            </dl>
+        </div>
+    </div>
+{% endblock %}

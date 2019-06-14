@@ -37,5 +37,9 @@ $(function ($) {
   $('.js-product-attribute').trigger('change');
   $('body').on('sonata.add_element', '[id$=_attributeValues] .field-container', function(event) {
     $('.js-product-attribute').trigger('change');
-  })
+  });
+
+  $('.js-product-category').on('change', function() {
+    this.form.submit();
+  });
 });

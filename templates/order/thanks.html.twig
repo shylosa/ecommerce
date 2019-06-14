@@ -4,5 +4,6 @@
 
 {% block body %}
     <h1>Спасибо за заказ. Мы с Вами свяжемся.</h1>
+    <a href="{{ path('payments_make_payment', {'id': order.id}) }}">Оплатить заказ</a>
     <a href="{{ path('default') }}">Продолжить покупки</a>
 {% endblock %}
